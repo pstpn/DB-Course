@@ -19,3 +19,13 @@
 
 # Go workspace file
 go.work
+
+# Tex
+*.aux
+*.bbl
+*.log
+*.bcf
+*.blg
+*.xml
+*.gz
+*.toc
