@@ -29,5 +29,6 @@ go.work
 *.xml
 *.gz
 *.toc
+*.zip
 
 .DS_Store

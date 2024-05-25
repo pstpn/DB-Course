@@ -1,23 +1,6 @@
 \chapter{Конструкторский раздел}
 
-В конструкторском разделе будут спроектированы диаграмма вариантов использования, диаграмма базы данных и ограничения целостности.
-
-\section{Диаграмма вариантов использования}
-
-На рисунке \ref{img:usecase} представлена спроектированная диаграмма вариантов использования.
-\includeimage
-	{usecase}
-	{f}
-	{H}
-	{1\textwidth}
-	{Диаграмма вариантов использования}
-	
-Исходя из спроектированной диаграммы вариантов использования~\ref{img:usecase}, выделяются следующие роли:
-\begin{enumerate}
-	\item Гость~-- неавторизованный сотрудник компании;
-	\item Сотрудник компании~-- пользователь, зарегистрированный в приложении;
-	\item Сотрудник службы безопасности (СБ)~-- сотрудник компании, обеспечивающий безопасность в рамках компании.
-\end{enumerate}
+В конструкторском разделе будут спроектированы диаграмма базы данных, ограничения целостности и ролевая модель.
 	
 \section{Диаграмма базы данных}
 
@@ -26,14 +9,14 @@
 	{entity-rel}
 	{f}
 	{H}
-	{0.41\textwidth}
+	{0.75\textwidth}
 	{Диаграмма базы данных и ограничения целостности}
 
 Для проектируемой базы данных необходимы следующие таблицы:
 \begin{enumerate}
 	\item таблица компаний~-- <<\texttt{company}>>;
 	\item таблица сотрудников компании~-- <<\texttt{employee}>>;
-	\item таблица информационных карточек о сотруднике~-- <<\texttt{info\_card}>>;
+	\item таблица информационных карточек о сотрудниках~-- <<\texttt{info\_card}>>;
 	\item таблица документов, удостоверяющих личность~-- <<\texttt{document}>>;
 	\item таблица полей документов, удостоверяющих личность~-- <<\texttt{field}>>;
 	\item таблица фотографий сотрудников из документов, удостоверяющих личность~-- <<\texttt{photo}>>;
@@ -41,6 +24,158 @@
 	\item связующая таблица проходов сотрудников через КПП~-- <<\texttt{passage}>>.
 \end{enumerate}
 
+В таблице \ref{table:companyCols} описаны отношения таблицы компаний <<\texttt{company}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:companyCols} Отношения таблицы <<\texttt{company}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор компании \\ \hline
+			\texttt{name} & \texttt{text} & Название компании \\ \hline
+			\texttt{city} & \texttt{text} & Город расположения офиса/предприятия компании \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\clearpage
+
+В таблице \ref{table:employeeCols} описаны отношения таблицы сотрудников <<\texttt{employee}>>.
+\begin{table}[h!]
+	\begin{center}
+	\caption{\label{table:employeeCols} Отношения таблицы <<\texttt{employee}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор сотрудника \\ \hline
+			\texttt{phone\_number} & \texttt{text} & Номер телефона сотрудника \\ \hline
+			\texttt{full\_name} & \texttt{text} & Полное имя сотрудника \\ \hline
+			\texttt{company\_id} & \texttt{text} & Идентификатор компании, в которой сотрудник работает \\ \hline
+			\texttt{post} & \texttt{text} & Должность сотрудника\\ \hline
+			\texttt{password} & \texttt{text} & Пароль сотрудника \\ \hline
+			\texttt{date\_of\_birth} & \texttt{date} & Дата рождения сотрудника \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+В таблице \ref{table:infoCardCols} описаны отношения таблицы информационных карточек о сотрудниках <<\texttt{info\_card}>>.
+\begin{table}[h!]
+	\begin{center}
+	\caption{\label{table:infoCardCols} Отношения таблицы <<\texttt{info\_card}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор карточки \\ \hline
+			\texttt{created\_employee\_id} & \texttt{text} & Идентификатор сотрудника, создавшего карточку \\ \hline
+			\texttt{is\_confirmed} & \texttt{boolean} & Подтверждена ли карточка сотрудником СБ \\ \hline
+			\texttt{created\_date} & \texttt{date} & Дата создания карточки \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\clearpage
+
+В таблице \ref{table:documentCols} описаны отношения таблицы документов, удостоверяющих личность <<\texttt{document}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:documentCols} Отношения таблицы <<\texttt{document}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор документа \\ \hline
+			\texttt{serial\_number} & \texttt{text} & Серийный номер документа \\ \hline
+			\texttt{info\_card\_id} & \texttt{text} & Идентификатор информационной карточки, к которой привязан документ \\ \hline
+			\texttt{type} & \texttt{text} & Тип документа \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+В таблице \ref{table:fieldCols} описаны отношения таблицы полей документов, удостоверяющих личность <<\texttt{field}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:fieldCols} Отношения таблицы <<\texttt{field}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор поля документа \\ \hline
+			\texttt{document\_id} & \texttt{text} & Идентификатор документа, которому принадлежит поле \\ \hline
+			\texttt{type} & \texttt{text} & Тип поля \\ \hline
+			\texttt{value} & \texttt{text} & Значение поля \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\clearpage
+
+В таблице \ref{table:photoCols} описаны отношения таблицы фотографий сотрудников из документов, удостоверяющих личность <<\texttt{photo}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:photoCols} Отношения таблицы <<\texttt{photo}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор фотографии \\ \hline
+			\texttt{document\_id} & \texttt{text} & Идентификатор документа, которому принадлежит фотография \\ \hline
+			\texttt{key} & \texttt{text} & Ключ для получения доступа к фотографии \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+В таблице \ref{table:passageCols} описаны отношения связующей таблицы проходов сотрудников через КПП <<\texttt{passage}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:passageCols} Отношения таблицы <<\texttt{passage}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор прохода \\ \hline
+			\texttt{checkpoint\_id} & \texttt{text} & Идентификатор КПП, через который был осуществлен проход \\ \hline
+			\texttt{document\_id} & \texttt{text} & Идентификатор документа, по которому был осуществлен проход \\ \hline
+			\texttt{type} & \texttt{text} & Тип прохода (вход или выход) \\ \hline
+			\texttt{time} & \texttt{timestamp} & Время прохода \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\clearpage
+
+В таблице \ref{table:checkpointCols} описаны отношения таблицы КПП <<\texttt{checkpoint}>>.
+\begin{table}[h!]
+	\begin{center}
+		\caption{\label{table:checkpointCols} Отношения таблицы <<\texttt{checkpoint}>>}
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			Атрибут & Тип & Описание \\ \hline
+			\texttt{id} & \texttt{text} & Идентификатор КПП \\ \hline
+			\texttt{phone\_number} & \texttt{text} & Номер стационарного телефона КПП \\ \hline
+		\end{tabularx}
+	\end{center}
+\end{table}
+
+\section{Ролевая модель}
+
+Исходя из спроектированной диаграммы вариантов использования~\ref{img:usecase}, выделяются следующие роли:
+\begin{enumerate}
+	\item Гость (неавторизованный сотрудник компании)~-- не имеет прав;
+	\item Сотрудник компании(пользователь, зарегистрированный в приложении)~-- имеет право на изменение и просмотр информации о себе в таблице сотрудников, таблице информационных карточек, таблицы документов, таблице полей документов и таблице фотографий;
+	\item Сотрудник службы безопасности (сотрудник компании, обеспечивающий безопасность в рамках компании/СБ)~-- имеет право на просмотр всех таблиц и на изменение таблицы инфомационных карточек и таблицы проходов;
+	\item Администратор~-- имеет право на просмотр и изменение всех таблиц.
+\end{enumerate}
+
+\section{Триггер базы данных}
+
+В течение дня важно отслеживать проходы сотрудников через КПП в целях безопасности и контроля рабочего дня~\cite{introCPP}.
+
+Для предоставления нужной информации необходимо реализовать триггер базы данных, который после очередного прохода через КПП будет выводить информацию об общем количестве входов и выходов на территории предприятия/офиса.
+
+Схема алгоритма работы триггера представлена на рисунке~\ref{img:trigger}.
+\includeimage
+	{trigger}
+	{f}
+	{H}
+	{1\textwidth}
+	{Схема алгоритма работы триггера базы данных}
+
 \section{Вывод}
 
-В конструкторском разделе были спроектированы диаграмма вариантов использования, диаграмма базы данных и ограничения целостности.
+В конструкторском разделе были спроектированы диаграмма базы данных, ограничения целостности, ролевая модель и триггер базы данных.
