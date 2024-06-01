@@ -32,3 +32,5 @@ go.work
 *.zip
 
 .DS_Store
+.idea
+*.jpg
