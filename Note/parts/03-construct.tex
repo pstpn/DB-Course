@@ -31,7 +31,7 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор компании \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор компании \\ \hline
 			\texttt{name} & \texttt{text} & Название компании \\ \hline
 			\texttt{city} & \texttt{text} & Город расположения офиса/предприятия компании \\ \hline
 		\end{tabularx}
@@ -47,12 +47,14 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор сотрудника \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор сотрудника \\ \hline
 			\texttt{phone\_number} & \texttt{text} & Номер телефона сотрудника \\ \hline
 			\texttt{full\_name} & \texttt{text} & Полное имя сотрудника \\ \hline
-			\texttt{company\_id} & \texttt{text} & Идентификатор компании, в которой сотрудник работает \\ \hline
+			\texttt{company\_id} & \texttt{integer} & Идентификатор компании, в которой сотрудник работает \\ \hline
 			\texttt{post} & \texttt{text} & Должность сотрудника\\ \hline
 			\texttt{password} & \texttt{text} & Пароль сотрудника \\ \hline
+			\texttt{refresh\_token} & \texttt{text} & Токен для обновления токена доступа к сайту \\ \hline
+			\texttt{token\_expired\_at} & \texttt{text} & Время деактивации refresh\_token \\ \hline
 			\texttt{date\_of\_birth} & \texttt{date} & Дата рождения сотрудника \\ \hline
 		\end{tabularx}
 	\end{center}
@@ -65,8 +67,8 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор карточки \\ \hline
-			\texttt{created\_employee\_id} & \texttt{text} & Идентификатор сотрудника, создавшего карточку \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор карточки \\ \hline
+			\texttt{created\_employee\_id} & \texttt{integer} & Идентификатор сотрудника, создавшего карточку \\ \hline
 			\texttt{is\_confirmed} & \texttt{boolean} & Подтверждена ли карточка сотрудником СБ \\ \hline
 			\texttt{created\_date} & \texttt{date} & Дата создания карточки \\ \hline
 		\end{tabularx}
@@ -82,9 +84,9 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор документа \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор документа \\ \hline
 			\texttt{serial\_number} & \texttt{text} & Серийный номер документа \\ \hline
-			\texttt{info\_card\_id} & \texttt{text} & Идентификатор информационной карточки, к которой привязан документ \\ \hline
+			\texttt{info\_card\_id} & \texttt{integer} & Идентификатор информационной карточки, к которой привязан документ \\ \hline
 			\texttt{type} & \texttt{text} & Тип документа \\ \hline
 		\end{tabularx}
 	\end{center}
@@ -97,8 +99,8 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор поля документа \\ \hline
-			\texttt{document\_id} & \texttt{text} & Идентификатор документа, которому принадлежит поле \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор поля документа \\ \hline
+			\texttt{document\_id} & \texttt{integer} & Идентификатор документа, которому принадлежит поле \\ \hline
 			\texttt{type} & \texttt{text} & Тип поля \\ \hline
 			\texttt{value} & \texttt{text} & Значение поля \\ \hline
 		\end{tabularx}
@@ -114,8 +116,8 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор фотографии \\ \hline
-			\texttt{document\_id} & \texttt{text} & Идентификатор документа, которому принадлежит фотография \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор фотографии \\ \hline
+			\texttt{document\_id} & \texttt{integer} & Идентификатор документа, которому принадлежит фотография \\ \hline
 			\texttt{key} & \texttt{text} & Ключ для получения доступа к фотографии \\ \hline
 		\end{tabularx}
 	\end{center}
@@ -128,9 +130,9 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор прохода \\ \hline
-			\texttt{checkpoint\_id} & \texttt{text} & Идентификатор КПП, через который был осуществлен проход \\ \hline
-			\texttt{document\_id} & \texttt{text} & Идентификатор документа, по которому был осуществлен проход \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор прохода \\ \hline
+			\texttt{checkpoint\_id} & \texttt{integer} & Идентификатор КПП, через который был осуществлен проход \\ \hline
+			\texttt{document\_id} & \texttt{integer} & Идентификатор документа, по которому был осуществлен проход \\ \hline
 			\texttt{type} & \texttt{text} & Тип прохода (вход или выход) \\ \hline
 			\texttt{time} & \texttt{timestamp} & Время прохода \\ \hline
 		\end{tabularx}
@@ -146,7 +148,7 @@
 		\begin{tabularx}{\textwidth}{|X|X|X|}
 			\hline
 			Атрибут & Тип & Описание \\ \hline
-			\texttt{id} & \texttt{text} & Идентификатор КПП \\ \hline
+			\texttt{id} & \texttt{integer} & Идентификатор КПП \\ \hline
 			\texttt{phone\_number} & \texttt{text} & Номер стационарного телефона КПП \\ \hline
 		\end{tabularx}
 	\end{center}
@@ -158,7 +160,7 @@
 \begin{enumerate}
 	\item Гость (неавторизованный сотрудник компании)~-- не имеет прав;
 	\item Сотрудник компании(пользователь, зарегистрированный в приложении)~-- имеет право на изменение и просмотр информации о себе в таблице сотрудников, таблице информационных карточек, таблицы документов, таблице полей документов и таблице фотографий;
-	\item Сотрудник службы безопасности (сотрудник компании, обеспечивающий безопасность в рамках компании/СБ)~-- имеет право на просмотр всех таблиц и на изменение таблицы инфомационных карточек и таблицы проходов;
+	\item Сотрудник службы безопасности (сотрудник компании, обеспечивающий безопасность в рамках компании/СБ)~-- имеет право на просмотр всех таблиц и на изменение таблицы информационных карточек и таблицы проходов;
 	\item Администратор~-- имеет право на просмотр и изменение всех таблиц.
 \end{enumerate}
 
