@@ -211,7 +211,7 @@ export default {
     },
     addPassage(type) {
       const now = new Date();
-      const formattedTime = `${this.padZero(now.getHours())}:${this.padZero(now.getMinutes())}:${this.padZero(now.getSeconds())} (${now.getDate()}.${now.getDay()}.${now.getFullYear()})`;
+      const formattedTime = `${this.padZero(now.getHours())}:${this.padZero(now.getMinutes())}:${this.padZero(now.getSeconds())} (${this.padZero(now.getDate())}.${this.padZero(now.getMonth() + 1)}.${now.getFullYear()})`;
       this.$store.dispatch('employee/createEmployeePassage', {
         infoCardID: this.selectedEmployee.ID,
         documentType: this.selectedEmployeeDocument.data.documentType,
@@ -227,8 +227,8 @@ export default {
       }
       this.passages[id].push({ type: type, time: time });
     },
-    padZero(num) {
-      return num < 10 ? '0' + num : num;
+    padZero(number) {
+      return number < 10 ? '0' + number : number;
     },
     confirmInfoCard() {
       let user = JSON.parse(localStorage.getItem('user'));

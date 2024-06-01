@@ -95,16 +95,21 @@ export default {
 
 <style scoped>
 .card {
+  display: flex;
+  justify-content: center;
   align-items: center;
   align-content: center;
   vertical-align: center;
   background: none;
   border: none white;
+  margin-top: 5%;
 }
 
 .card-container {
+  display: flex;
+  align-items: center;
   background: #f7f7f7;
-  padding: 20px;
+  padding: 50px;
   border-radius: 100px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 800px;

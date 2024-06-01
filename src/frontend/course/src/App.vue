@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand"> <font-awesome-icon icon="" /> Идентификация на КПП</a>
+      <a href="/" class="navbar-brand">
+        <img src="@/assets/logo.svg" alt="Logo" class="logo">
+        <span class="site-name">Идентификация на КПП</span>
+      </a>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
@@ -14,7 +17,6 @@
           </router-link>
         </li>
       </div>
-
       <div v-if="!currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/register" class="nav-link">
@@ -27,7 +29,6 @@
           </router-link>
         </li>
       </div>
-
       <div v-if="currentUser && !showAdminBoard" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">
@@ -35,7 +36,6 @@
           </router-link>
         </li>
       </div>
-
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" @click.prevent="logOut">
@@ -44,7 +44,6 @@
         </li>
       </div>
     </nav>
-
     <div class="container">
       <router-view />
     </div>
@@ -69,3 +68,91 @@ export default {
   }
 };
 </script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.site-name {
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #efeded, #0056b3, #007bff);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 7s infinite;
+  position: relative;
+  font-family: 'Montserrat', sans-serif;
+  margin-right: 20px;
+}
+
+.nav-link {
+  font-size: 1rem;
+  color: #ffffff;
+  transition: color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.nav-link .fa-icon {
+  margin-right: 5px;
+}
+
+.nav-link:hover {
+  color: #ff6b6b;
+  transform: scale(1.05);
+}
+
+.nav-item {
+  margin-left: 15px;
+}
+
+.site-name::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(80, 54, 54, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.site-name:hover::after {
+  opacity: 1;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
