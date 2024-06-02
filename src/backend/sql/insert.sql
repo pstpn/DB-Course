@@ -1,6 +1,7 @@
-insert into company(name, city)
-values ('Yandex', 'Moscow'),
-       ('Tilt', 'SPB');
+insert into company(id, name, city)
+values (1, 'Yandex', 'Moscow'),
+       (2, 'OZON', 'SPB'),
+       (3, 'VK', 'Tver');
 
 select *
 from company;
@@ -39,9 +40,6 @@ values ('123'),
        ('111'),
        ('323'),
        ('444');
-
-insert into checkpoint(id, phone_number)
-values (1, '1');
 
 select *
 from checkpoint;

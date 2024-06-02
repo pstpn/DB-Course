@@ -112,7 +112,7 @@ export default {
       successful: false,
       loading: false,
       message: "",
-      companies: [ "Yandex", "Полисофт", "Ситисофт" ],
+      companies: [ "Yandex", "OZON", "VK" ],
       schema,
     };
   },
