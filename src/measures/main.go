@@ -4,12 +4,15 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
+	"encoding/csv"
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/gridfs"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -17,7 +20,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func uploadPostgres() {
+func insertPostgres(count int, testCount int64) (map[string]int64, map[string]int, map[string]int64) {
 	connStr := "user=postgres dbname=testdb password='admin' sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -30,23 +33,49 @@ func uploadPostgres() {
 		log.Fatal(err)
 	}
 
-	imageFiles := []string{"data/1.jpg", "data/2.jpg", "data/3.jpg", "data/4.jpg", "data/5.jpg", "data/6.jpg", "data/7.jpg"}
-	for _, file := range imageFiles {
+	times := make(map[string]int64)
+	sizes := make(map[string]int, count)
+	ids := make(map[string]int64, count)
+	for num := range count {
+		file := fmt.Sprintf("data/t%d.jpg", num+1)
 		data, err := os.ReadFile(file)
 		if err != nil {
 			log.Fatal(err)
 		}
+		sizes[file] = len(data)
 
-		_, err = db.Exec("INSERT INTO images (data) VALUES ($1)", data)
+		var id int64
+		var summ int64
+		for range testCount {
+			start := time.Now()
+			row := db.QueryRow("INSERT INTO images (data) VALUES ($1) RETURNING id", data)
+			summ += time.Since(start).Microseconds()
+			err = row.Scan(&id)
+			if err != nil {
+				log.Fatal(err)
+			}
+			_, err = db.Exec("DELETE FROM images WHERE id = $1", id)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		times[file] = summ / testCount
+
+		row := db.QueryRow("INSERT INTO images (data) VALUES ($1) RETURNING id", data)
+		err = row.Scan(&id)
 		if err != nil {
 			log.Fatal(err)
 		}
+		ids[file] = id
 
-		fmt.Printf("Uploaded %s to PostgreSQL\n", file)
+		fmt.Printf("Inserted %s to PostgreSQL\n", file)
 	}
+
+	return ids, sizes, times
 }
 
-func uploadMongo() {
+func uploadMongo(count int, testCount int64) (map[string]primitive.ObjectID, map[string]int64) {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
@@ -66,8 +95,10 @@ func uploadMongo() {
 		log.Fatal(err)
 	}
 
-	imageFiles := []string{"data/1.jpg", "data/2.jpg", "data/3.jpg", "data/4.jpg", "data/5.jpg", "data/6.jpg", "data/7.jpg"}
-	for _, file := range imageFiles {
+	times := make(map[string]int64)
+	ids := make(map[string]primitive.ObjectID, count)
+	for num := range count {
+		file := fmt.Sprintf("data/t%d.jpg", num+1)
 		data, err := os.ReadFile(file)
 		if err != nil {
 			log.Fatal(err)
@@ -77,7 +108,30 @@ func uploadMongo() {
 			Key:   file,
 			Value: len(data)},
 		})
-		_, err = bucket.UploadFromStream(
+
+		var id primitive.ObjectID
+		var summ int64
+		for range testCount {
+			start := time.Now()
+			id, err = bucket.UploadFromStream(
+				file,
+				bytes.NewReader(data),
+				uploadOpts,
+			)
+			if err != nil {
+				log.Fatal(err)
+			}
+			summ += time.Since(start).Microseconds()
+
+			err = bucket.Delete(id)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+
+		times[file] = summ / testCount
+
+		id, err = bucket.UploadFromStream(
 			file,
 			bytes.NewReader(data),
 			uploadOpts,
@@ -85,46 +139,50 @@ func uploadMongo() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		ids[file] = id
 
 		fmt.Printf("Uploaded %s to MongoDB\n", file)
 	}
+
+	return ids, times
 }
 
-func measurePostgres() {
+func selectPostgres(count int, testCount int64, ids map[string]int64) map[string]int64 {
 	connStr := "user=postgres dbname=testdb password='admin' sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
-
-	start := time.Now()
-	rows, err := db.Query("SELECT data FROM images")
-	if err != nil {
-		log.Fatal(err)
-	}
-	elapsed := time.Since(start)
-	fmt.Printf("Time to select: %v\n", elapsed)
-	defer rows.Close()
-
-	var times []time.Duration
-	for rows.Next() {
-		var data []byte
-		start := time.Now()
-		err := rows.Scan(&data)
+	defer func() {
+		_, err = db.Exec("DELETE FROM images")
+		db.Close()
 		if err != nil {
 			log.Fatal(err)
 		}
-		elapsed := time.Since(start)
-		times = append(times, elapsed)
+	}()
+
+	times := make(map[string]int64, count)
+	for num := range count {
+		file := fmt.Sprintf("data/t%d.jpg", num+1)
+
+		var summ int64
+		for range testCount {
+			start := time.Now()
+			rows, err := db.Query("SELECT data FROM images WHERE id = $1", ids[file])
+			if err != nil {
+				log.Fatal(err)
+			}
+			summ += time.Since(start).Microseconds()
+			rows.Close()
+		}
+
+		times[file] = summ / testCount
 	}
 
-	for i, t := range times {
-		fmt.Printf("Time to fetch image %d from PostgreSQL: %v\n", i+1, t)
-	}
+	return times
 }
 
-func measureMongo() {
+func findMongo(count int, testCount int64, ids map[string]primitive.ObjectID) map[string]int64 {
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
@@ -144,36 +202,76 @@ func measureMongo() {
 		log.Fatal(err)
 	}
 
-	start := time.Now()
-	cursor, err := bucket.Find(context.Background())
+	times := make(map[string]int64, count)
+	for num := range count {
+		file := fmt.Sprintf("data/t%d.jpg", num+1)
+
+		var summ int64
+		for range testCount {
+			start := time.Now()
+			_, err = bucket.Find(bson.D{{"_id", ids[file]}})
+			if err != nil {
+				log.Fatal(err)
+			}
+			summ += time.Since(start).Microseconds()
+		}
+
+		times[file] = summ / testCount
+	}
+
+	err = db.Drop(context.TODO())
 	if err != nil {
 		log.Fatal(err)
 	}
-	elapsed := time.Since(start)
-	fmt.Printf("Time to find: %v\n", elapsed)
-	defer cursor.Close(context.Background())
 
-	var times []time.Duration
-	for cursor.Next(context.Background()) {
-		var result bson.M
-		start := time.Now()
-		err := cursor.Decode(&result)
+	return times
+}
+
+func toCSV(postgres, mongo map[string]int64, sizes map[string]int, filename string) {
+	f, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := csv.NewWriter(f)
+	defer func() {
+		w.Flush()
+		f.Close()
+	}()
+	w.Comma = ';'
+
+	for num := range len(sizes) {
+		file := fmt.Sprintf("data/t%d.jpg", num+1)
+		err = w.Write([]string{
+			strconv.Itoa(sizes[file] / 1024),
+			strconv.Itoa(int(postgres[file])),
+			strconv.Itoa(int(mongo[file])),
+		})
 		if err != nil {
 			log.Fatal(err)
 		}
-		elapsed := time.Since(start)
-		times = append(times, elapsed)
-	}
-
-	for i, t := range times {
-		fmt.Printf("Time to fetch image %d from MongoDB: %v\n", i+1, t)
 	}
 }
 
 func main() {
-	uploadPostgres()
-	uploadMongo()
+	postgresIDs, sizes, insertTimes := insertPostgres(14, 100)
+	mongoIDs, uploadTimes := uploadMongo(14, 100)
 
-	measurePostgres()
-	measureMongo()
+	selectTimes := selectPostgres(14, 100, postgresIDs)
+	findTimes := findMongo(14, 100, mongoIDs)
+
+	fmt.Println()
+	fmt.Println("Sizes: ", sizes)
+	fmt.Println()
+	fmt.Println("Insert times Postgres: ", selectTimes)
+	fmt.Println()
+	fmt.Println("Upload times Mongo: ", selectTimes)
+	fmt.Println()
+	fmt.Println("Select times Postgres: ", selectTimes)
+	fmt.Println()
+	fmt.Println("Find times Mongo: ", findTimes)
+	fmt.Println()
+
+	toCSV(selectTimes, findTimes, sizes, "result1.csv")
+	toCSV(insertTimes, uploadTimes, sizes, "result2.csv")
 }
