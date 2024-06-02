@@ -17,8 +17,7 @@ from employee;
 insert into info_card(created_employee_id, is_confirmed, created_date)
 values (1, false, '21.02.2003'),
        (2, false, '22.02.2003'),
-       (3, true, '11.02.2003'),
-       (4, true, '20.02.2003');
+       (3, true, '11.02.2003');
 
 select *
 from info_card;
@@ -27,8 +26,7 @@ insert into document(serial_number, info_card_id, type)
 values ('123', 1, 'Паспорт'),
        ('321', 2, 'СНИЛС'),
        ('333', 2, 'Паспорт'),
-       ('222', 3, 'Паспорт'),
-       ('111123', 4, 'СНИЛС');
+       ('222', 3, 'Паспорт');
 
 select *
 from document;
