@@ -1,23 +1,11 @@
 <template>
-  <div class="gradient"></div>
-  <div class="home">
-    <div class="header">
-      <h1>Добро пожаловать!</h1>
-      <h2>Приложение для идентификации сотрудников компании на КПП</h2>
-      <p>Организация безопасности объектов стала проще с нашим приложением</p>
-    </div>
-    <div class="project-details">
-      <h3>Краткое описание проекта</h3>
-      <p>Приложение для идентификации сотрудников компании на КПП. Разрабатываемый программный продукт позволяет сотруднику СБ быстро и качественно организовывать мероприятия по обеспечению безопасности на объектах.</p>
-    </div>
-    <div class="domain-analysis">
-      <h3>Краткое описание предметной области</h3>
-      <p>Предметной областью является сфера безопасности (в частности, организация безопасности каких-либо объектов).</p>
-    </div>
-    <div class="justification">
-      <h3>Краткое обоснование целесообразности и актуальности проекта</h3>
-      <p>В современном мире такая система является очень актуальной и востребованной, так как всегда необходимо поддерживать безопасность в абсолютно разных областях и местах.</p>
-    </div>
+  <div class="gradient">
+      <div class="home">
+          <div class="header">
+            <h2 class="header-header">Идентификация сотрудников компании на КПП</h2>
+            <p class="header-text">Разрабатываемый программный продукт позволяет сотруднику СБ быстро и качественно организовывать мероприятия по обеспечению безопасности на объектах. В современном мире такая система является очень актуальной и востребованной, так как всегда необходимо поддерживать безопасность в абсолютно разных областях и местах. Поэтому организация безопасности объектов стала проще с нашим приложением.</p>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -29,35 +17,46 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для домашней страницы */
 .home {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  display: flex;
+  padding: 50px;
+  backdrop-filter: blur(60px);
+  height: 100%;
+  width: 850px;
 }
 
 .header {
-  text-align: center;
-  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 850px;
+  margin-bottom: 80px;
+  gap: 10px;
 }
 
-.project-details,
-.domain-analysis,
-.analogs-analysis,
-.justification,
-.user-roles,
-.use-cases,
-.tech-stack {
-  margin-bottom: 40px;
+.header-header {
+  font-size: 50px;
+  background: linear-gradient(90deg, #efeded, #007bff);
+  font-weight: 600;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.header-text {
+  font-size: 18px;
+  color: white;
 }
 
 .gradient{
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/bg.jpeg");
+  background-size: 100% 100%;
   position: absolute;
-  top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
-  background-image: linear-gradient(45deg, rgb(145, 158, 182), rgb(102, 102, 202));
   z-index: -1;
 }
 </style>

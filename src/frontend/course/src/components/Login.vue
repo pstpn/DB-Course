@@ -102,7 +102,7 @@ export default {
   vertical-align: center;
   background: none;
   border: none white;
-  margin-top: 5%;
+  margin: 5%;
 }
 
 .card-container {
@@ -110,10 +110,11 @@ export default {
   align-items: center;
   background: #f7f7f7;
   padding: 50px;
-  border-radius: 100px;
+  border-radius: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
+  max-width: 600px;
   width: 100%;
+  height: 100%;
   text-align: left;
   align-items: center;
   align-content: center;
@@ -126,7 +127,7 @@ export default {
 
 .form-label {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   text-align: center;
 }
 
@@ -136,7 +137,7 @@ export default {
 }
 
 .form-control {
-  width: 100%;
+  width: 350px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;

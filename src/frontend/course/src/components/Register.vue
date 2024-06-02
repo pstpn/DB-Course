@@ -154,23 +154,22 @@ export default {
 
 <style scoped>
 .card {
+  display: flex;
   align-items: center;
   align-content: center;
   vertical-align: center;
   border-color: white;
+  margin: 3%;
 }
 
 .card-container {
+  display: flex;
   background: #f7f7f7;
-  padding: 20px;
-  border-radius: 100px;
+  padding: 50px;
+  border-radius: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+  max-width: 600px;
   width: 100%;
-  text-align: left;
-  align-items: center;
-  align-content: center;
-  vertical-align: center;
 }
 
 .form-group {
@@ -179,7 +178,7 @@ export default {
 
 .form-label {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 22px;
   text-align: center;
 }
 
@@ -189,7 +188,7 @@ export default {
 }
 
 .form-control {
-  width: 100%;
+  width: 350px;
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
@@ -208,7 +207,7 @@ export default {
   font-weight: 600;
   text-align: center;
   text-decoration: none;
-  padding: 10px 15px;
+  padding: 15px 15px;
   margin: 10px 5px;
   border-radius: 5px;
   transition: background-color 0.3s ease;
