@@ -1,47 +1,49 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand navbar-dark bg-dark">
-      <a href="/" class="navbar-brand">
+      <a href="/home" class="navbar-brand">
         <img src="@/assets/logo.svg" alt="Logo" class="logo">
         <span class="site-name">Идентификация на КПП</span>
       </a>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" /> Домой
-          </router-link>
-        </li>
-        <li v-if="showAdminBoard" class="nav-item">
-          <router-link to="/find-employees" class="nav-link">
-            <font-awesome-icon icon="user" /> Поиск сотрудников
-          </router-link>
-        </li>
-      </div>
-      <div v-if="!currentUser" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link to="/register" class="nav-link">
-            <font-awesome-icon icon="user-plus" /> Зарегистрироваться
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link">
-            <font-awesome-icon icon="sign-in-alt" /> Войти
-          </router-link>
-        </li>
-      </div>
-      <div v-if="currentUser && !showAdminBoard" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <router-link to="/profile" class="nav-link">
-            <font-awesome-icon icon="user" /> Профиль
-          </router-link>
-        </li>
-      </div>
-      <div v-if="currentUser" class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" @click.prevent="logOut">
-            <font-awesome-icon icon="sign-out-alt" /> Выйти
-          </a>
-        </li>
+      <div class="navbar-container">
+        <div class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <router-link to="/home" class="nav-link">
+              <font-awesome-icon icon="home" /> Домой
+            </router-link>
+          </li>
+          <li v-if="showAdminBoard" class="nav-item">
+            <router-link to="/find-employees" class="nav-link">
+              <font-awesome-icon icon="user" /> Поиск сотрудников
+            </router-link>
+          </li>
+        </div>
+        <div v-if="!currentUser" class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link to="/register" class="nav-link">
+              <font-awesome-icon icon="user-plus" /> Зарегистрироваться
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <router-link to="/login" class="nav-link">
+              <font-awesome-icon icon="sign-in-alt" /> Войти
+            </router-link>
+          </li>
+        </div>
+        <div v-if="currentUser && !showAdminBoard" class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link to="/profile" class="nav-link">
+              <font-awesome-icon icon="user" /> Профиль
+            </router-link>
+          </li>
+        </div>
+        <div v-if="currentUser" class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" @click.prevent="logOut">
+              <font-awesome-icon icon="sign-out-alt" /> Выйти
+            </a>
+          </li>
+        </div>
       </div>
     </nav>
     <div class="container">
@@ -81,6 +83,12 @@ body {
 .navbar {
   display: flex;
   align-items: center;
+  gap: 50vh;
+}
+
+.navbar-container {
+  display: flex;
+  flex-direction: row;
 }
 
 .navbar-brand {
@@ -91,11 +99,12 @@ body {
 .logo {
   width: 40px;
   height: 40px;
+  margin-left: 20px;
   margin-right: 10px;
 }
 
 .site-name {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   background: linear-gradient(90deg, #efeded, #0056b3, #007bff);
   background-size: 300%;
   -webkit-background-clip: text;
@@ -125,7 +134,7 @@ body {
 }
 
 .nav-item {
-  margin-left: 15px;
+  margin-left: 8vh;
 }
 
 .site-name::after {
