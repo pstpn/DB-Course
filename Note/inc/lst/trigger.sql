@@ -1,4 +1,5 @@
-create or replace function employee_passages_for_day(passage_document_id int, check_date date)
+create or replace function employee_passages_for_day
+    (passage_document_id int, check_date date)
     returns table
             (
                 document_id   int,
@@ -49,8 +50,9 @@ begin
             current_date
          );
 
-    raise notice E'За % по документу с идентификатором % сотрудник: \n- вошел % раз(а)\n- вышел % раз(а)',
-                current_date, document_id, entries_count, exits_count;
+    raise notice E'За % по документу с идентификатором % ' ||
+        E'сотрудник: \n- вошел % раз(а)\n- вышел % раз(а)',
+        current_date, document_id, entries_count, exits_count;
     return new;
 end;
 $$ language plpgsql;
