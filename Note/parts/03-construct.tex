@@ -7,8 +7,10 @@
 	{entity-rel}
 	{f}
 	{H}
-	{0.85\textwidth}
+	{0.8\textwidth}
 	{Диаграмма базы данных и ограничения целостности}
+	
+\clearpage
 
 Для проектируемой базы данных необходимы следующие таблицы:
 \begin{enumerate}
@@ -36,6 +38,8 @@
 	\end{center}
 \end{table}
 
+\clearpage
+
 В таблице \ref{table:employeeCols} описаны отношения таблицы сотрудников <<\texttt{employee}>>.
 \begin{table}[h!]
 	\begin{center}
@@ -56,8 +60,6 @@
 	\end{center}
 \end{table}
 
-\clearpage
-
 В таблице \ref{table:infoCardCols} описаны отношения таблицы информационных карточек о сотрудниках <<\texttt{info\_card}>>.
 \begin{table}[h!]
 	\begin{center}
@@ -72,6 +74,8 @@
 		\end{tabularx}
 	\end{center}
 \end{table}
+
+\clearpage
 
 В таблице \ref{table:documentCols} описаны отношения таблицы документов, удостоверяющих личность <<\texttt{document}>>.
 \begin{table}[h!]
@@ -88,8 +92,6 @@
 	\end{center}
 \end{table}
 
-\clearpage
-
 В таблице \ref{table:fieldCols} описаны отношения таблицы полей документов, удостоверяющих личность <<\texttt{field}>>.
 \begin{table}[h!]
 	\begin{center}
@@ -105,6 +107,8 @@
 	\end{center}
 \end{table}
 
+\clearpage
+
 В таблице \ref{table:photoCols} описаны отношения таблицы фотографий сотрудников из документов, удостоверяющих личность <<\texttt{photo}>>.
 \begin{table}[h!]
 	\begin{center}
@@ -119,8 +123,6 @@
 	\end{center}
 \end{table}
 
-\clearpage
-
 В таблице \ref{table:passageCols} описаны отношения связующей таблицы проходов сотрудников через КПП <<\texttt{passage}>>.
 \begin{table}[h!]
 	\begin{center}
@@ -129,8 +131,8 @@
 			\hline
 			Атрибут & Тип & Описание \\ \hline
 			\texttt{id} & \texttt{integer} & Идентификатор прохода \\ \hline
-			\texttt{checkpoint\_id} & \texttt{integer} & Идентификатор КПП, через который был осуществлен проход \\ \hline
-			\texttt{document\_id} & \texttt{integer} & Идентификатор документа, по которому был осуществлен проход \\ \hline
+			\texttt{checkpoint\_id} & \texttt{integer} & Идентификатор КПП, через который был проход \\ \hline
+			\texttt{document\_id} & \texttt{integer} & Идентификатор документа, по которому был проход \\ \hline
 			\texttt{type} & \texttt{text} & Тип прохода (вход или выход) \\ \hline
 			\texttt{time} & \texttt{timestamp} & Время прохода \\ \hline
 		\end{tabularx}
@@ -145,7 +147,7 @@
 			\hline
 			Атрибут & Тип & Описание \\ \hline
 			\texttt{id} & \texttt{integer} & Идентификатор КПП \\ \hline
-			\texttt{phone\_number} & \texttt{text} & Номер стационарного телефона КПП \\ \hline
+			\texttt{phone\_number} & \texttt{text} & Номер телефона КПП \\ \hline
 		\end{tabularx}
 	\end{center}
 \end{table}
